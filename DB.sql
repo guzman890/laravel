@@ -1,99 +1,71 @@
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
-
--- -----------------------------------------------------
--- Schema clinica
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema clinica
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `clinica` DEFAULT CHARACTER SET utf8 ;
+CREATE SCHEMA IF NOT EXISTS `clinica` DEFAULT CHARACTER SET latin1 ;
 USE `clinica` ;
 
 -- -----------------------------------------------------
--- Table `clinica`.`paciente`
+-- Table `clinica`.`especialidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`paciente` (
-  `dni` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `clinica`.`especialidad` (
+  `idespecialidad` INT(11) NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
-  `edad` INT NOT NULL,
-  `userid` BIGINT(20) NOT NULL,
-  PRIMARY KEY (`dni`))
-ENGINE = InnoDB;
+  `estado` INT(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`idespecialidad`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
 -- Table `clinica`.`medico`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `clinica`.`medico` (
-  `idmedico` INT NOT NULL AUTO_INCREMENT,
+  `idmedico` INT(11) NOT NULL AUTO_INCREMENT,
+  `dni` INT(11) NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(45) NOT NULL,
   `telefono` VARCHAR(45) NOT NULL,
+  `direccion` VARCHAR(45) NOT NULL,
+  `estado` INT(11) NOT NULL DEFAULT 1,
   PRIMARY KEY (`idmedico`))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+AUTO_INCREMENT = 24
+DEFAULT CHARACTER SET = latin1;
 
 
 -- -----------------------------------------------------
--- Table `clinica`.`especialidad`
+-- Table `clinica`.`medico_has_especialidad`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`especialidad` (
-  `idespecialidad` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idespecialidad`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `clinica`.`consultorio`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`consultorio` (
-  `idconsultorio` INT NOT NULL AUTO_INCREMENT,
-  `piso` INT NOT NULL,
-  `numero` INT NOT NULL,
-  PRIMARY KEY (`idconsultorio`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `clinica`.`citas`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `clinica`.`citas` (
-  `idcitas` INT NOT NULL,
-  `consultorio_idconsultorio` INT NOT NULL,
-  `medico_idmedico` INT NOT NULL,
-  `especialidad_idespecialidad` INT NOT NULL,
-  `paciente_dni` INT NOT NULL,
-  `fecha` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`idcitas`),
-  INDEX `fk_citas_consultorio_idx` (`consultorio_idconsultorio` ASC),
-  INDEX `fk_citas_medico1_idx` (`medico_idmedico` ASC),
-  INDEX `fk_citas_especialidad1_idx` (`especialidad_idespecialidad` ASC),
-  INDEX `fk_citas_paciente1_idx` (`paciente_dni` ASC),
-  CONSTRAINT `fk_citas_consultorio`
-    FOREIGN KEY (`consultorio_idconsultorio`)
-    REFERENCES `clinica`.`consultorio` (`idconsultorio`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_citas_medico1`
-    FOREIGN KEY (`medico_idmedico`)
-    REFERENCES `clinica`.`medico` (`idmedico`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_citas_especialidad1`
+CREATE TABLE IF NOT EXISTS `clinica`.`medico_has_especialidad` (
+  `medico_idmedico` INT(11) NOT NULL,
+  `especialidad_idespecialidad` INT(11) NOT NULL,
+  PRIMARY KEY (`medico_idmedico`, `especialidad_idespecialidad`),
+  INDEX `fk_medico_has_especialidad_especialidad1_idx` (`especialidad_idespecialidad` ASC),
+  INDEX `fk_medico_has_especialidad_medico_idx` (`medico_idmedico` ASC),
+  CONSTRAINT `fk_medico_has_especialidad_especialidad1`
     FOREIGN KEY (`especialidad_idespecialidad`)
     REFERENCES `clinica`.`especialidad` (`idespecialidad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_citas_paciente1`
-    FOREIGN KEY (`paciente_dni`)
-    REFERENCES `clinica`.`paciente` (`dni`)
+  CONSTRAINT `fk_medico_has_especialidad_medico`
+    FOREIGN KEY (`medico_idmedico`)
+    REFERENCES `clinica`.`medico` (`idmedico`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
 
 
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+-- -----------------------------------------------------
+-- Table `clinica`.`paciente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `clinica`.`paciente` (
+  `dni` INT(11) NOT NULL,
+  `nombre` VARCHAR(45) NOT NULL,
+  `apellido` VARCHAR(45) NOT NULL,
+  `edad` INT(11) NOT NULL,
+  `talla` DECIMAL(10,0) NOT NULL,
+  `telefono` VARCHAR(45) NOT NULL,
+  `direccion` VARCHAR(45) NOT NULL,
+  `estado` INT(11) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`dni`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = latin1;
