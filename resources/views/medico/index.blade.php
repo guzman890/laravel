@@ -5,11 +5,11 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Lista de Paciente
-                <a type="button" href="/pacienteCreate" class="btn btn-primary">Nuevo</a> 
+                <div class="card-header">
+                Lista de Medico
+                <a type="button" href="/medicoCreate" class="btn btn-primary">Nuevo</a> 
                 </div>
-               
-                
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -21,13 +21,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($pacientes as $paciente)
+                        @foreach ($medicos as $medico)
                         <tr>
-                            <td> <a type="button" href="/pacienteShow?dni={{ $paciente->dni }}" class="btn btn-default"> {{ $paciente->dni }} </a> </td>
-                            <td> {{ $paciente->apellido }} </td>
-                            <td> {{ $paciente->nombre }} </td>
-                            <td> <a type="button" href="/pacienteUpdate?dni={{ $paciente->dni }}" class="btn btn-default">Editar</a> </td>
-                            <td> <a type="button" href="/pacienteDelete?dni={{ $paciente->dni }}" class="btn btn-default">Eliminar</a></td>
+                            <td> <a type="button" href="/medicoShow?idmedico={{ $medico->idmedico }}" class="btn btn-default">{{ $medico->dni }}</a> </td>
+                            <td>{{ $medico->apellido }} </td>
+                            <td>{{ $medico->nombre }}</td>
+                            <td><a type="button" href="/medicoUpdate?idmedico={{ $medico->idmedico }}" class="btn btn-default">Editar</a> </td> 
+                            <td><a type="button" href="/medicoDelete?idmedico={{ $medico->idmedico }}" class="btn btn-default">Eliminar</a> </td>
                         </tr>
                         @endforeach
                     </tbody>

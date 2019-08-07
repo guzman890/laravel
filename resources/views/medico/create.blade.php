@@ -5,9 +5,9 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Crear Paciente</div>
+                <div class="card-header">Crear Medico</div>
 
-                {{ Form::open(['route' => 'Paciente_Storage','method' => 'POST' ]) }}
+                {{ Form::open(['route' => 'Medico_Storage','method' => 'POST' ]) }}
 
                     <div class="form-group">
                         <label for="DNI">DNI:</label>
@@ -25,13 +25,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="Edad">Edad:</label>
-                        <input type="number" class="form-control" id="edad" name="edad">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="Talla">Talla:</label>
-                        <input type="number" class="form-control" id="talla" name="talla" step=".01">
+                        <label for="Especialidad">Especialidad : </label>
+                        </br>
+                        <select name="idespecialidad[]" multiple>
+                            @foreach ($especialidades as $especialidad)
+                            <option value="{{$especialidad->idespecialidad}}">{{$especialidad->nombre}}</option> 
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="form-group">

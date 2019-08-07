@@ -42,15 +42,17 @@ class PacienteController extends Controller
 
         $paciente =  new Paciente;
 
-        $paciente->dni      =   $request->dni;
-        $paciente->nombre   =   $request->nombre;
-        $paciente->edad     =   $request->edad;
+        $paciente->dni          =   $request->dni;
+        $paciente->nombre       =   $request->nombre;
+        $paciente->apellido     =   $request->apellido;
+        $paciente->telefono     =   $request->telefono;
+        $paciente->direccion    =   $request->direccion;
+        $paciente->edad         =   $request->edad;
+        $paciente->talla        =   $request->talla;
 
         $paciente->save();
         
-        $pacientes = Paciente::where('estado',1)->get();
-
-        return view('paciente/index')->with('pacientes', $pacientes);
+        return redirect()->route('Paciente_Index');
     }
 
     /**
@@ -61,7 +63,7 @@ class PacienteController extends Controller
     public function show(Request $request)
     {
         $paciente = Paciente::find($request->dni);
-        return view('paciente/show');
+        return view('paciente/show')->with('paciente', $paciente);
     }
 
     /**
@@ -88,13 +90,16 @@ class PacienteController extends Controller
         //
         $paciente = Paciente::find($request->dni);
 
-        $paciente->nombre   =   $request->nombre;
-        $paciente->edad     =   $request->edad;
+        $paciente->nombre       =   $request->nombre;
+        $paciente->apellido     =   $request->apellido;
+        $paciente->telefono     =   $request->telefono;
+        $paciente->direccion    =   $request->direccion;
+        $paciente->edad         =   $request->edad;
+        $paciente->talla        =   $request->talla;
+
         $paciente->save();
 
-        $pacientes = Paciente::where('estado',1)->get();
-
-        return view('paciente/index')->with('pacientes', $pacientes);
+        return redirect()->route('Paciente_Index');
     }
 
     /**
@@ -110,8 +115,6 @@ class PacienteController extends Controller
         $paciente->estado   =   0;
         $paciente->save();
 
-        $pacientes = Paciente::where('estado',1)->get();
-
-        return view('paciente/index')->with('pacientes', $pacientes);
+        return redirect()->route('Paciente_Index');
     }
 }
